@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Commuters - Smart Roads</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/pwa.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Back Button for PWA -->
+        <div class="app-header">
+            <div class="header-content">
+                <a href="/" class="standalone-back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="logo">
+                    <i class="fas fa-users"></i>
+                    <h1>Daily Commuters</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="createGroupBtn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <!-- Traffic Prediction -->
+            <section class="traffic-prediction">
+                <h3 class="section-title">Traffic Prediction</h3>
+                <div class="prediction-card">
+                    <div class="prediction-header">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <h4>Route to Downtown</h4>
+                            <p>Today, 8:00 AM - 9:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="prediction-content">
+                        <div class="prediction-item">
+                            <span class="prediction-label">Best Departure Time:</span>
+                            <span class="prediction-value">7:45 AM</span>
+                        </div>
+                        <div class="prediction-item">
+                            <span class="prediction-label">Expected Delay:</span>
+                            <span class="prediction-value warning">15-20 minutes</span>
+                        </div>
+                        <div class="prediction-item">
+                            <span class="prediction-label">Alternative Route:</span>
+                            <span class="prediction-value">Via Highway 101</span>
+                        </div>
+                    </div>
+                    <div class="prediction-advice">
+                        <i class="fas fa-lightbulb"></i>
+                        <p>Leaving before 7:45 AM reduces delay by 70%</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Groups -->
+            <section class="active-groups">
+                <h3 class="section-title">Active Groups</h3>
+                <div class="groups-list">
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-info">
+                                <h4>Office Commute</h4>
+                                <div class="group-meta">
+                                    <span class="group-status active">Live</span>
+                                    <span class="group-members">
+                                        <i class="fas fa-user-friends"></i> 5 members
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="icon-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="group-details">
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Downtown Office</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-clock"></i>
+                                <span>ETA: 8:45 AM (15 min delay)</span>
+                            </div>
+                        </div>
+                        <div class="group-actions">
+                            <button class="btn-primary">Join Route</button>
+                            <button class="btn-text">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="group-card">
+                        <div class="group-header">
+                            <div class="group-info">
+                                <h4>College Carpool</h4>
+                                <div class="group-meta">
+                                    <span class="group-status">Starting Soon</span>
+                                    <span class="group-members">
+                                        <i class="fas fa-user-friends"></i> 3 members
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="icon-btn">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                        <div class="group-details">
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>University Campus</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Starts: 9:30 AM</span>
+                            </div>
+                        </div>
+                        <div class="group-actions">
+                            <button class="btn-primary">Join Group</button>
+                            <button class="btn-text">Set Reminder</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Updates -->
+            <section class="group-updates">
+                <h3 class="section-title">Group Updates</h3>
+                <div class="updates-feed">
+                    <div class="update-post">
+                        <div class="update-header">
+                            <div class="update-author">
+                                <i class="fas fa-user-circle"></i>
+                                <div>
+                                    <strong>Sarah (Leader)</strong>
+                                    <span class="update-time">2 min ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="update-content">
+                            <p>Traffic is heavier than expected on Main Street. Let's take the alternate route via Maple Avenue.</p>
+                        </div>
+                        <div class="update-actions">
+                            <button class="btn-text">
+                                <i class="fas fa-thumbs-up"></i> Acknowledge
+                            </button>
+                            <button class="btn-text">
+                                <i class="fas fa-comment"></i> Comment
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="update-post">
+                        <div class="update-header">
+                            <div class="update-author">
+                                <i class="fas fa-user-circle"></i>
+                                <div>
+                                    <strong>System Alert</strong>
+                                    <span class="update-time">10 min ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="update-content">
+                            <p>⚠️ Accident reported ahead. Expected delay: 20 minutes. Consider taking lunch break now.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h3 class="section-title">Quick Actions</h3>
+                <div class="actions-grid">
+                    <button class="action-btn" id="startNewTrip">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Start New Trip</span>
+                    </button>
+                    <button class="action-btn" id="inviteFriends">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Invite Friends</span>
+                    </button>
+                    <button class="action-btn" id="viewMap">
+                        <i class="fas fa-map"></i>
+                        <span>View Live Map</span>
+                    </button>
+                    <button class="action-btn" id="scheduleTrip">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Schedule Trip</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Group Creation Modal -->
+        <div class="modal-overlay" id="groupModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create New Group</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <form id="groupForm">
+                    <div class="input-group">
+                        <label class="input-label">Group Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., Office Commute" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Destination</label>
+                        <input type="text" class="form-input" placeholder="Enter destination" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Departure Time</label>
+                        <input type="time" class="form-input" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Travel Mode</label>
+                        <select class="form-input">
+                            <option value="car">Car</option>
+                            <option value="bike">Bike</option>
+                            <option value="public">Public Transport</option>
+                            <option value="walk">Walk</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Add Members (Email or Phone)</label>
+                        <div class="members-input">
+                            <input type="text" class="form-input" placeholder="Enter email or phone">
+                            <button type="button" class="btn-text" id="addMemberBtn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="members-list" id="membersList"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%;">
+                        <i class="fas fa-users"></i> Create Group
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <nav class="app-nav">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-users"></i>
+                <span>Groups</span>
+            </a>
+            <a href="#" class="nav-item" id="commuteMapNav">
+                <i class="fas fa-map"></i>
+                <span>Map</span>
+            </a>
+            <a href="#" class="nav-item" id="commuteSettingsNav">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/modules/commuters.js"></script>
+    
+    <script>
+        // Initialize commuters module
+        document.addEventListener('DOMContentLoaded', () => {
+            const commutersModule = new CommutersModule();
+            
+            // Handle back button in PWA
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                document.querySelector('.standalone-back').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.history.back();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Delivery Drivers - Smart Roads</title>
+    <meta name="theme-color" content="#28A745">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Smart Roads - Delivery">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/pwa.css">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        /* Delivery-specific styles */
+        .delivery-header {
+            background: linear-gradient(135deg, #28A745, #218838);
+            color: white;
+        }
+        
+        .view-toggle {
+            display: flex;
+            background: var(--background-alt);
+            border-radius: var(--radius-md);
+            padding: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .view-toggle-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .view-toggle-btn.active {
+            background: var(--background);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-card {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .stat-content h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-content p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Delivery Header -->
+        <header class="app-header delivery-header">
+            <div class="header-content">
+                <a href="/" class="standalone-back" style="color: white;">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="logo" style="color: white;">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h1 style="color: white;">Delivery Drivers</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="newDelivery" style="color: white;">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="icon-btn" id="menuBtn" style="color: white;">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- View Toggle -->
+            <div class="view-toggle">
+                <button class="view-toggle-btn active" id="driverViewBtn">
+                    <i class="fas fa-user-tie"></i> Driver View
+                </button>
+                <button class="view-toggle-btn" id="customerViewBtn">
+                    <i class="fas fa-user"></i> Customer View
+                </button>
+            </div>
+
+            <!-- Driver Stats -->
+            <section class="stats-section">
+                <h3 class="section-title">Today's Performance</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(0, 119, 252, 0.1);">
+                            <i class="fas fa-box" style="color: var(--primary-blue);"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h4>12</h4>
+                            <p>Deliveries</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(40, 167, 69, 0.1);">
+                            <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h4>11</h4>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(255, 193, 7, 0.1);">
+                            <i class="fas fa-clock" style="color: var(--warning);"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h4>9</h4>
+                            <p>On Time</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(108, 117, 125, 0.1);">
+                            <i class="fas fa-rupee-sign" style="color: var(--text-light);"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h4>₹1,850</h4>
+                            <p>Earnings</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Parcel Map -->
+            <section class="map-section">
+                <div class="section-header">
+                    <h3 class="section-title">Live Parcel Tracking</h3>
+                    <div class="map-controls">
+                        <button class="btn-text" id="showAllParcels">
+                            <i class="fas fa-boxes"></i> All Parcels
+                        </button>
+                        <button class="btn-text" id="centerOnDriver">
+                            <i class="fas fa-location-arrow"></i> My Location
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="map-container" id="deliveryMap"></div>
+                
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FFC107;"></div>
+                        <span>Pending</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0077FC;"></div>
+                        <span>In Transit</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #28A745;"></div>
+                        <span>Delivered</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Deliveries -->
+            <section class="deliveries-section">
+                <div class="section-header">
+                    <h3 class="section-title">Active Deliveries</h3>
+                    <button class="btn-text" id="viewAll">
+                        <i class="fas fa-list"></i> View All
+                    </button>
+                </div>
+                
+                <div class="deliveries-list">
+                    <!-- Deliveries will be loaded by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h3 class="section-title">Quick Actions</h3>
+                <div class="actions-grid">
+                    <button class="action-btn" id="scanParcel">
+                        <i class="fas fa-qrcode"></i>
+                        <span>Scan Parcel</span>
+                    </button>
+                    <button class="action-btn" id="optimizeRoute">
+                        <i class="fas fa-route"></i>
+                        <span>Optimize Route</span>
+                    </button>
+                    <button class="action-btn" id="updateStatus">
+                        <i class="fas fa-edit"></i>
+                        <span>Update Status</span>
+                    </button>
+                    <button class="action-btn" id="reportDelay">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Report Delay</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Delivery Navigation -->
+        <nav class="app-nav">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/modules/delivery.html" class="nav-item active">
+                <i class="fas fa-shipping-fast"></i>
+                <span>Deliveries</span>
+            </a>
+            <a href="#" class="nav-item" id="earningsNav">
+                <i class="fas fa-chart-line"></i>
+                <span>Earnings</span>
+            </a>
+            <a href="#" class="nav-item" id="profileNav">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Menu Modal -->
+        <div class="modal-overlay" id="menuModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Delivery Menu</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="menu-list">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-history"></i>
+                        <span>Delivery History</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-route"></i>
+                        <span>Route Planner</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/maps.js"></script>
+    <script src="/assets/js/realtime.js"></script>
+    <script src="/assets/js/modules/delivery.js"></script>
+    
+    <script>
+        // Initialize module
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menu button
+            document.getElementById('menuBtn')?.addEventListener('click', () => {
+                document.getElementById('menuModal').style.display = 'flex';
+            });
+            
+            // Close modal
+            document.querySelector('.modal-close')?.addEventListener('click', () => {
+                document.getElementById('menuModal').style.display = 'none';
+            });
+            
+            // Navigation
+            document.querySelectorAll('.nav-item:not(.active)').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.app.showComingSoon();
+                });
+            });
+            
+            // Menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('menuModal').style.display = 'none';
+                    window.app.showComingSoon();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

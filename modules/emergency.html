@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Emergency Services - Smart Roads</title>
+    <meta name="theme-color" content="#DC3545">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Smart Roads - Emergency">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/pwa.css">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        /* Emergency-specific styles */
+        .emergency-header {
+            background: linear-gradient(135deg, #DC3545, #C82333);
+            color: white;
+        }
+        
+        .emergency-alert-btn {
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #DC3545, #C82333);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+        }
+        
+        .emergency-alert-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(220, 53, 69, 0.4);
+        }
+        
+        .emergency-alert-btn:active {
+            transform: translateY(0);
+        }
+        
+        .emergency-alert-btn i {
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .case-card {
+            border-left: 4px solid #DC3545;
+        }
+        
+        .hospital-card {
+            border-left: 4px solid #0077FC;
+        }
+        
+        .emergency-nav {
+            background: #DC3545;
+        }
+        
+        .emergency-nav .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .emergency-nav .nav-item.active {
+            color: white;
+        }
+        
+        .emergency-nav .nav-item.active::after {
+            background: white;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Emergency Header -->
+        <header class="app-header emergency-header">
+            <div class="header-content">
+                <a href="/" class="standalone-back" style="color: white;">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="logo" style="color: white;">
+                    <i class="fas fa-ambulance"></i>
+                    <h1 style="color: white;">Emergency Services</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="emergencyAlert" style="color: white;">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="icon-btn" id="menuBtn" style="color: white;">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Emergency Alert Button -->
+            <section class="emergency-alert-section">
+                <button class="emergency-alert-btn" id="oneTapEmergency">
+                    <i class="fas fa-ambulance"></i>
+                    <span>ONE-TAP EMERGENCY</span>
+                    <small>Press in case of medical emergency</small>
+                </button>
+            </section>
+
+            <!-- Active Emergency Cases -->
+            <section class="cases-section">
+                <div class="section-header">
+                    <h3 class="section-title">Active Emergency Cases</h3>
+                    <button class="btn-text" id="refreshCases">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="cases-list">
+                    <!-- Cases will be loaded by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Nearest Hospitals -->
+            <section class="hospitals-section">
+                <div class="section-header">
+                    <h3 class="section-title">Nearest Hospitals</h3>
+                    <button class="btn-text" id="findHospitals">
+                        <i class="fas fa-search"></i> Find More
+                    </button>
+                </div>
+                
+                <div class="hospitals-list">
+                    <!-- Hospitals will be loaded by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Emergency Map -->
+            <section class="map-section">
+                <div class="section-header">
+                    <h3 class="section-title">Emergency Response Map</h3>
+                    <div class="map-controls">
+                        <button class="btn-text" id="centerOnUser">
+                            <i class="fas fa-location-arrow"></i> My Location
+                        </button>
+                        <button class="btn-text" id="showAmbulances">
+                            <i class="fas fa-ambulance"></i> Ambulances
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="map-container" id="emergencyMap"></div>
+                
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #DC3545;"></div>
+                        <span>Emergency</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #0077FC;"></div>
+                        <span>Hospital</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #28A745;"></div>
+                        <span>Ambulance</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h3 class="section-title">Quick Actions</h3>
+                <div class="actions-grid">
+                    <button class="action-btn" id="firstAidGuide">
+                        <i class="fas fa-first-aid"></i>
+                        <span>First Aid Guide</span>
+                    </button>
+                    <button class="action-btn" id="emergencyContacts">
+                        <i class="fas fa-address-book"></i>
+                        <span>Emergency Contacts</span>
+                    </button>
+                    <button class="action-btn" id="reportTraffic">
+                        <i class="fas fa-road"></i>
+                        <span>Report Blockage</span>
+                    </button>
+                    <button class="action-btn" id="callPolice">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Call Police (100)</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Emergency Navigation -->
+        <nav class="app-nav emergency-nav">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/modules/emergency.html" class="nav-item active">
+                <i class="fas fa-ambulance"></i>
+                <span>Emergency</span>
+            </a>
+            <a href="#" class="nav-item" id="hospitalsNav">
+                <i class="fas fa-hospital"></i>
+                <span>Hospitals</span>
+            </a>
+            <a href="#" class="nav-item" id="profileNav">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Menu Modal -->
+        <div class="modal-overlay" id="menuModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Emergency Menu</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="menu-list">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-history"></i>
+                        <span>Emergency History</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Medical Profile</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Safety Tips</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/maps.js"></script>
+    <script src="/assets/js/realtime.js"></script>
+    <script src="/assets/js/modules/emergency.js"></script>
+    
+    <script>
+        // Initialize module
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menu button
+            document.getElementById('menuBtn')?.addEventListener('click', () => {
+                document.getElementById('menuModal').style.display = 'flex';
+            });
+            
+            // Close modal
+            document.querySelector('.modal-close')?.addEventListener('click', () => {
+                document.getElementById('menuModal').style.display = 'none';
+            });
+            
+            // Navigation
+            document.querySelectorAll('.nav-item:not(.active)').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.app.showComingSoon();
+                });
+            });
+            
+            // Menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('menuModal').style.display = 'none';
+                    window.app.showComingSoon();
+                });
+            });
+            
+            // Call police button
+            document.getElementById('callPolice')?.addEventListener('click', () => {
+                window.location.href = 'tel:100';
+            });
+        });
+    </script>
+</body>
+</html>

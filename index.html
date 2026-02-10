@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart Roads - Intelligent Transportation Platform</title>
+    <meta name="theme-color" content="#0077FC">
+    <meta name="description" content="Smart Roads - Real-time traffic intelligence and route optimization">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Smart Roads">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/pwa.css">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-road"></i>
+                    <h1>Smart Roads</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="icon-btn" id="profileBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2>Intelligent Traffic Solutions</h2>
+                    <p>Real-time traffic prediction, route optimization, and smart planning for everyone on the road</p>
+                    <div class="traffic-status">
+                        <span class="status-label">Current City Traffic:</span>
+                        <span class="status-value moderate">Moderate</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Cards Grid -->
+            <section class="modules-grid">
+                <h3 class="section-title">Select Your Module</h3>
+                
+                <div class="cards-container">
+                    <!-- Daily Commuters Card -->
+                    <a href="/modules/commuters.html" class="module-card" data-module="commuters">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <h4>Daily Commuters</h4>
+                            <p>Group planning & predictive traffic advice</p>
+                        </div>
+                        <div class="card-badge">
+                            <span class="live-indicator"></span>
+                            Live
+                        </div>
+                    </a>
+
+                    <!-- Delivery Drivers Card -->
+                    <a href="/modules/delivery.html" class="module-card" data-module="delivery">
+                        <div class="card-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="card-content">
+                            <h4>Delivery Drivers</h4>
+                            <p>Live parcel tracking & route optimization</p>
+                        </div>
+                        <div class="card-badge">
+                            <span class="live-indicator"></span>
+                            Live
+                        </div>
+                    </a>
+
+                    <!-- Cab Drivers Card -->
+                    <a href="/modules/cab-drivers.html" class="module-card" data-module="cab">
+                        <div class="card-icon">
+                            <i class="fas fa-taxi"></i>
+                        </div>
+                        <div class="card-content">
+                            <h4>Cab Drivers</h4>
+                            <p>Smart wait suggestions & trip optimization</p>
+                        </div>
+                        <div class="card-badge">
+                            <span class="live-indicator"></span>
+                            Live
+                        </div>
+                    </a>
+
+                    <!-- Emergency Services Card -->
+                    <a href="/modules/emergency.html" class="module-card" data-module="emergency">
+                        <div class="card-icon">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                        <div class="card-content">
+                            <h4>Emergency Services</h4>
+                            <p>Priority routing & real-time coordination</p>
+                        </div>
+                        <div class="card-badge urgent">
+                            <span class="live-indicator"></span>
+                            Urgent
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Live Updates Section -->
+            <section class="updates-section">
+                <h3 class="section-title">Live Traffic Updates</h3>
+                <div class="updates-list">
+                    <div class="update-item">
+                        <div class="update-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="update-content">
+                            <p>Heavy congestion on Downtown Expressway. Avoid if possible.</p>
+                            <span class="update-time">5 min ago</span>
+                        </div>
+                    </div>
+                    <div class="update-item">
+                        <div class="update-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="update-content">
+                            <p>Traffic clearing on Northern Bridge. Normal flow expected.</p>
+                            <span class="update-time">12 min ago</span>
+                        </div>
+                    </div>
+                    <div class="update-item">
+                        <div class="update-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="update-content">
+                            <p>Roadwork on Central Avenue. Use alternate routes.</p>
+                            <span class="update-time">25 min ago</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- App Navigation -->
+        <nav class="app-nav">
+            <a href="/" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" id="mapNav">
+                <i class="fas fa-map"></i>
+                <span>Map</span>
+            </a>
+            <a href="#" class="nav-item" id="tripsNav">
+                <i class="fas fa-route"></i>
+                <span>Trips</span>
+            </a>
+            <a href="#" class="nav-item" id="settingsNav">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <!-- Install Prompt -->
+        <div class="install-prompt" id="installPrompt">
+            <div class="prompt-content">
+                <i class="fas fa-download"></i>
+                <div class="prompt-text">
+                    <h4>Install Smart Roads App</h4>
+                    <p>Get full-screen experience and offline access</p>
+                </div>
+                <button class="btn-primary" id="installBtn">Install</button>
+                <button class="btn-text" id="dismissInstall">Not Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/service-worker.js"></script>
+    
+    <!-- Initialize App -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

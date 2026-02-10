@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cab Drivers - Smart Roads</title>
+    <meta name="theme-color" content="#0077FC">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Smart Roads - Cab">
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/pwa.css">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <a href="/" class="standalone-back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="logo">
+                    <i class="fas fa-taxi"></i>
+                    <h1>Cab Drivers</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="toggleOnline">
+                        <i class="fas fa-circle"></i>
+                    </button>
+                    <button class="icon-btn" id="menuBtn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Driver Status -->
+            <section class="driver-status-section">
+                <div class="status-card">
+                    <div class="status-header">
+                        <div class="driver-info">
+                            <div class="driver-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div>
+                                <h3>Raj Driver</h3>
+                                <div class="driver-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                    <span class="driver-id">ID: CD7890</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="status-indicator offline">
+                            Offline
+                        </div>
+                    </div>
+                    
+                    <div class="status-stats">
+                        <div class="stat">
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Rides Today</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">₹2,450</div>
+                            <div class="stat-label">Earnings</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8.2</div>
+                            <div class="stat-label">Hours Online</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Smart Wait Suggestions -->
+            <section class="suggestions-section">
+                <div class="section-header">
+                    <h3 class="section-title">Smart Wait Suggestions</h3>
+                    <button class="btn-text" id="refreshSuggestions">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                
+                <div class="suggestion-cards">
+                    <!-- Suggestions will be loaded by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Live Map -->
+            <section class="map-section">
+                <div class="section-header">
+                    <h3 class="section-title">Live Surge Map</h3>
+                    <div class="map-controls">
+                        <button class="btn-text" id="showHeatmap">
+                            <i class="fas fa-fire"></i> Heatmap
+                        </button>
+                        <button class="btn-text" id="showSurge">
+                            <i class="fas fa-bolt"></i> Surge Areas
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="map-container" id="cabMap"></div>
+                
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #28A745;"></div>
+                        <span>Low Demand</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #FFC107;"></div>
+                        <span>Medium Demand</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #DC3545;"></div>
+                        <span>High Demand</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Available Rides -->
+            <section class="rides-section">
+                <div class="section-header">
+                    <h3 class="section-title">Available Rides</h3>
+                    <button class="btn-text" id="filterRides">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </div>
+                
+                <div class="rides-list">
+                    <!-- Rides will be loaded by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h3 class="section-title">Quick Actions</h3>
+                <div class="actions-grid">
+                    <button class="action-btn" id="startBreak">
+                        <i class="fas fa-coffee"></i>
+                        <span>Take Break</span>
+                    </button>
+                    <button class="action-btn" id="endDay">
+                        <i class="fas fa-sun"></i>
+                        <span>End Day</span>
+                    </button>
+                    <button class="action-btn" id="viewEarnings">
+                        <i class="fas fa-rupee-sign"></i>
+                        <span>Earnings</span>
+                    </button>
+                    <button class="action-btn" id="support">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- App Navigation -->
+        <nav class="app-nav">
+            <a href="/" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/modules/cab-drivers.html" class="nav-item active">
+                <i class="fas fa-taxi"></i>
+                <span>Drive</span>
+            </a>
+            <a href="#" class="nav-item" id="earningsNav">
+                <i class="fas fa-chart-line"></i>
+                <span>Earnings</span>
+            </a>
+            <a href="#" class="nav-item" id="profileNav">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+
+        <!-- Menu Modal -->
+        <div class="modal-overlay" id="menuModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Driver Menu</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="menu-list">
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-car"></i>
+                        <span>Vehicle Details</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-history"></i>
+                        <span>Trip History</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
+                    </a>
+                    <a href="#" class="menu-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/maps.js"></script>
+    <script src="/assets/js/realtime.js"></script>
+    <script src="/assets/js/modules/cab-drivers.js"></script>
+    
+    <script>
+        // Initialize module
+        document.addEventListener('DOMContentLoaded', () => {
+            // Menu button
+            document.getElementById('menuBtn')?.addEventListener('click', () => {
+                document.getElementById('menuModal').style.display = 'flex';
+            });
+            
+            // Close modal
+            document.querySelector('.modal-close')?.addEventListener('click', () => {
+                document.getElementById('menuModal').style.display = 'none';
+            });
+            
+            // Navigation
+            document.querySelectorAll('.nav-item:not(.active)').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.app.showComingSoon();
+                });
+            });
+            
+            // Menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById('menuModal').style.display = 'none';
+                    window.app.showComingSoon();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

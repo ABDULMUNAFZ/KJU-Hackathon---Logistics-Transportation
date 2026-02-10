@@ -1,0 +1,230 @@
+/* PWA Specific Styles */
+@media (display-mode: standalone) {
+    body {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .app-header {
+        padding-top: env(safe-area-inset-top);
+        height: calc(60px + env(safe-area-inset-top));
+    }
+    
+    .app-header .logo h1 {
+        font-size: 1.1rem;
+    }
+    
+    .main-content {
+        padding-top: calc(1rem + env(safe-area-inset-top));
+    }
+    
+    .app-nav {
+        padding-bottom: env(safe-area-inset-bottom);
+        height: calc(60px + env(safe-area-inset-bottom));
+    }
+    
+    /* Hide browser UI elements in standalone mode */
+    .install-prompt {
+        display: none !important;
+    }
+    
+    /* Enhance touch targets for standalone mode */
+    .module-card,
+    .nav-item,
+    .btn-primary,
+    .icon-btn {
+        min-height: 44px;
+    }
+    
+    .module-card {
+        padding: 1.25rem;
+    }
+    
+    /* Optimize for full-screen */
+    .app-container {
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+    
+    /* Improve scrolling in standalone */
+    .main-content {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+    
+    /* Status bar background */
+    .app-header {
+        background: var(--primary-blue);
+    }
+    
+    .app-header .logo h1,
+    .app-header .logo i,
+    .app-header .icon-btn {
+        color: white;
+    }
+    
+    .app-header {
+        border-bottom: none;
+    }
+}
+
+/* Safari PWA specific */
+@supports (-webkit-touch-callout: none) {
+    .app-container {
+        min-height: -webkit-fill-available;
+    }
+    
+    .main-content {
+        min-height: calc(100vh - 140px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+}
+
+/* Prevent zoom on input focus in iOS */
+@media (max-width: 768px) {
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Offline Indicator */
+.offline-indicator {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--warning);
+    color: var(--text-dark);
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-weight: 500;
+    z-index: 2000;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.offline-indicator.show {
+    transform: translateY(0);
+}
+
+.offline-indicator i {
+    margin-right: 0.5rem;
+}
+
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary-blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeOut 0.3s ease 1s forwards;
+}
+
+.splash-logo {
+    animation: pulse 2s infinite;
+}
+
+.splash-logo i {
+    font-size: 4rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.splash-logo h1 {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Launch Screen Animation */
+@media (display-mode: standalone) {
+    .splash-screen {
+        animation: fadeOut 0.3s ease 0.5s forwards;
+    }
+}
+
+/* Touch Feedback */
+.touch-feedback {
+    position: relative;
+    overflow: hidden;
+}
+
+.touch-feedback:active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 119, 252, 0.1);
+    animation: ripple 0.3s ease-out;
+}
+
+@keyframes ripple {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+/* Safe Area Insets */
+.safe-area-top {
+    padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Prevent pull-to-refresh in standalone */
+@media (display-mode: standalone) {
+    body {
+        overscroll-behavior-y: none;
+    }
+}
+
+/* Back Button in standalone mode */
+.standalone-back {
+    display: none;
+}
+
+@media (display-mode: standalone) {
+    .standalone-back {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}
+
+/* Fullscreen map in standalone */
+@media (display-mode: standalone) {
+    .fullscreen-map {
+        height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+}
