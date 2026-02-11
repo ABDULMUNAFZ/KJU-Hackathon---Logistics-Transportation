@@ -15,11 +15,21 @@ The app behaves like a native mobile app with offline fallback support.
 
 
 
-<img src="https://github.com/user-attachments/assets/78f31d95-ea0c-4e62-a4e4-d1c4a237d0cd" alt="IMG_7386" width="50%" />
-<img src="https://github.com/user-attachments/assets/0a56b3ca-3d57-437b-8324-d692224cdbf3" alt="IMG_7383" width="50%" />
-<img src="https://github.com/user-attachments/assets/b8ced56c-c1bb-4658-9525-a3f0a1ebc2ec" alt="IMG_7384" width="50%" />
-<img src="https://github.com/user-attachments/assets/28ab067b-ab5a-4fcd-9dcc-5ada9190b4f2" alt="IMG_7385" width="50%" />
-<img src="https://github.com/user-attachments/assets/0a427f3b-ff79-4ed9-ae36-e6a4b44ebcc0" alt="IMG_7387" width="50%" />
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/78f31d95-ea0c-4e62-a4e4-d1c4a237d0cd" alt="IMG_7386" width="200" /></td>
+    <td><img src="https://github.com/user-attachments/assets/0a56b3ca-3d57-437b-8324-d692224cdbf3" alt="IMG_7383" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/b8ced56c-c1bb-4658-9525-a3f0a1ebc2ec" alt="IMG_7384" width="200" /></td>
+    <td><img src="https://github.com/user-attachments/assets/28ab067b-ab5a-4fcd-9dcc-5ada9190b4f2" alt="IMG_7385" width="200" /></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/0a427f3b-ff79-4ed9-ae36-e6a4b44ebcc0" alt="IMG_7387" width="200" /></td>
+    <td></td>
+  </tr>
+</table>
+
 
 
 
