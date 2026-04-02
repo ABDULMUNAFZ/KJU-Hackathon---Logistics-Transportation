@@ -10,7 +10,7 @@ Android: Chrome “Add to Home Screen” → full-screen app mode
 
 iOS: Safari “Add to Home Screen” → full-screen app mode
 
-The app behaves like a native mobile app with offline fallback support.
+"The app behaves like a native mobile app with offline fallback support."
 
 
 
