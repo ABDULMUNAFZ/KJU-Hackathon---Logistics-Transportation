@@ -11,7 +11,7 @@ It can be installed on any mobile device via “Add to Home Screen”:
 "iOS: Safari “Add to Home Screen” → full-screen app mode"
 
 "The app behaves like a native mobile app with offline fallback support."
-
+>>>
 
 
 
