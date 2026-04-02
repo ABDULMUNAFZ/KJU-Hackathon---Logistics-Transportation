@@ -12,6 +12,7 @@ It can be installed on any mobile device via “Add to Home Screen”:
 
 "The app behaves like a native mobile app with offline fallback support."
 >>>
+>>>
 
 
 
