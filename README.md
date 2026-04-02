@@ -6,9 +6,9 @@ Smart Roads is a mobile-first Progressive Web Application (PWA) built with Flutt
 
 It can be installed on any mobile device via “Add to Home Screen”:
 
-Android: Chrome “Add to Home Screen” → full-screen app mode
+"Android: Chrome “Add to Home Screen” → full-screen app mode"
 
-iOS: Safari “Add to Home Screen” → full-screen app mode
+"iOS: Safari “Add to Home Screen” → full-screen app mode"
 
 "The app behaves like a native mobile app with offline fallback support."
 
